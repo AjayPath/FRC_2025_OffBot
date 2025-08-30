@@ -41,9 +41,8 @@ public class ElevatorSubsystem extends SubsystemBase {
       ResetMode.kResetSafeParameters, 
       PersistMode.kPersistParameters);
 
-    elevatorPID = new SimPID(0.035, 0, 0, 0);
-    elevatorPID.setMaxOutput(1);
-
+    elevatorPID = new SimPID(0.07, 0, 0, 1);
+    elevatorPID.setMaxOutput(0.95);
   }
 
   @Override

@@ -8,38 +8,33 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class MoveElevatorCommand extends Command {
-  /** Creates a new MoveElevatorCommand. */
+public class HoldElevatorCommand extends Command {
+  /** Creates a new HoldElevatorCommand. */
+  private final ElevatorSubsystem ele;
 
-  private final ElevatorSubsystem elevator;
-  private final double target;
-
-  public MoveElevatorCommand(ElevatorSubsystem elevator, double targetPosition) {
+  public HoldElevatorCommand(ElevatorSubsystem ele) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.elevator = elevator;
-    this.target = targetPosition;
+    this.ele = ele;
+    addRequirements(ele);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    elevator.setTargetPosition(target);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    ele.runPID();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return elevator.atTarget();
+    return false;
   }
 }

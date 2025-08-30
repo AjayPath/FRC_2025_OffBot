@@ -206,7 +206,7 @@ public class SimPID {
         iVal = m_i * (double)m_errorSum;
 
         // Calculate the D component
-        double velocity = (currentValue - m_previousValue) / ((double)pidTimer.get()) * 0.02;
+        double velocity = (currentValue - m_previousValue) / ((double)pidTimer.get());
         // If not the first cycle
         if (!m_firstCycle) {
             dVal = m_d * (double)velocity;

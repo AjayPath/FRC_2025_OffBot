@@ -29,6 +29,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.HoldArmCommand;
+import frc.robot.commands.HoldElevatorCommand;
 import frc.robot.commands.MoveArmCommand;
 import frc.robot.commands.MoveElevatorCommand;
 import frc.robot.commands.TestPIDCommand;
@@ -69,6 +72,14 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
+
+    m_arm.setDefaultCommand(
+      new HoldArmCommand(m_arm)
+    );
+
+    m_elevator.setDefaultCommand(
+      new HoldElevatorCommand(m_elevator)
+    );
   }
 
   /**
@@ -85,29 +96,78 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, XboxController.Button.kY.value)
     //     .onTrue(new InstantCommand(() -> {m_robotDrive.setSimpleOdomPose(0, 0, 90);})); 
 
-     new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value)
-             .onTrue(new MoveArmCommand(m_arm, 190));
+    //  new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value)
+    //          .onTrue(new MoveArmCommand(m_arm, 190));
 
-    new JoystickButton(m_operatorController, XboxController.Button.kLeftStick.value)
-      .onTrue(new MoveArmCommand(m_arm, 50));
+    // new JoystickButton(m_operatorController, XboxController.Button.kLeftStick.value)
+    //   .onTrue(new MoveArmCommand(m_arm, 50));
 
 
-     new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value)
-         .onTrue(new MoveArmCommand(m_arm, 0));
+    //  new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value)
+    //      .onTrue(new MoveArmCommand(m_arm, 0));
+
+    // new JoystickButton(m_operatorController, XboxController.Button.kY.value)
+    //   .onTrue(new MoveElevatorCommand(m_elevator, 24));
+
+    // new JoystickButton(m_operatorController, XboxController.Button.kB.value)
+    //   .onTrue(new MoveElevatorCommand(m_elevator, 14));
+
+    // new JoystickButton(m_operatorController, XboxController.Button.kA.value)
+    //   .onTrue(new MoveElevatorCommand(m_elevator, 2));
+
+    // new JoystickButton(m_operatorController, XboxController.Button.kX.value)
+    //   .onTrue(new MoveElevatorCommand(m_elevator, 0));
 
     new JoystickButton(m_operatorController, XboxController.Button.kY.value)
-      .onTrue(new MoveElevatorCommand(m_elevator, 24));
-
-    new JoystickButton(m_operatorController, XboxController.Button.kB.value)
-      .onTrue(new MoveElevatorCommand(m_elevator, 14));
-
-    new JoystickButton(m_operatorController, XboxController.Button.kA.value)
-      .onTrue(new MoveElevatorCommand(m_elevator, 2));
+      .onTrue(
+        new SequentialCommandGroup(
+          new MoveArmCommand(m_arm, 190),
+          new MoveElevatorCommand(m_elevator, 23)
+        )
+      );
 
     new JoystickButton(m_operatorController, XboxController.Button.kX.value)
-      .onTrue(new MoveElevatorCommand(m_elevator, 0));
+      .onTrue(
+        new SequentialCommandGroup(
+          new MoveArmCommand(m_arm, 190),
+          new MoveElevatorCommand(m_elevator, 0)
+        )
+      );
 
+    new JoystickButton(m_operatorController, XboxController.Button.kA.value)
+      .onTrue(
+        new SequentialCommandGroup(
+          new MoveArmCommand(m_arm, 50),
+          new MoveElevatorCommand(m_elevator, 0)
+        )
+      );
 
+    // new JoystickButton(m_operatorController, XboxController.Button.kB.value)
+    //   .onTrue(
+    //     new SequentialCommandGroup(
+    //       new MoveArmCommand(m_arm, 0),
+    //       new MoveElevatorCommand(m_elevator, 0)
+    //     )
+    //   );
+
+    new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value)
+      .onTrue(
+        new SequentialCommandGroup(
+          new MoveElevatorCommand(m_elevator, 10),
+          new MoveArmCommand(m_arm, 0)
+        )
+      );
+
+    new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value)
+      .onTrue(
+        new SequentialCommandGroup(
+          new MoveElevatorCommand(m_elevator, 1),
+          new MoveArmCommand(m_arm, 0)
+        )
+      );
+
+    new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.5)
+      .onTrue(new MoveArmCommand(m_arm, 100));
 
   }
 

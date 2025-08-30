@@ -37,8 +37,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     armEncoder.setPosition(0);
 
-    armPID = new SimPID(0.01, 0.00001, 0, 0);
-    armPID.setMaxOutput(0.65);
+    armPID = new SimPID(0.025, 0, 0, 1);
+    armPID.setMaxOutput(0.7);
 
   }
 
